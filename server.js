@@ -9,8 +9,16 @@ app.use(express.json()); // 讓後端看得懂前端傳來的 JSON 資料
 
 const dbURI = 'mongodb+srv://eric20080110_db_user:eric970110@tododata.67qp4fs.mongodb.net/?appName=tododata';
 
+
+const PORT = process.env.PORT || 3000;
+
 mongoose.connect(dbURI)
-  .then(() => console.log('✅ 成功連線到 MongoDB 資料庫！'))
+  .then(() => {
+  console.log('✅ 成功連線到 MongoDB 資料庫！')
+  app.listen(PORT, () => {
+      console.log(`🚀 後端伺服器已啟動，監聽 Port: ${PORT}`);
+  }
+    )})
   .catch((err) => console.log('❌ 資料庫連線失敗：', err));
 
 
@@ -61,8 +69,3 @@ app.put('/api/todos/:id', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000; 
-
-app.listen(PORT, () => {
-  console.log(`後端伺服器已啟動，監聽 Port: ${PORT}`);
-});
