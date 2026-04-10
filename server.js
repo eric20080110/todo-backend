@@ -23,6 +23,7 @@ mongoose.connect(dbURI)
 
 
 const todoSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
   content: { type: String, required: true }, // 必填文字
   checked: { type: Boolean, default: false },// 預設為 false
   detailcontent: { type: String, default: '' },
@@ -32,15 +33,18 @@ const todoSchema = new mongoose.Schema({
 const Todo = mongoose.model('Todo', todoSchema);
 // 1. 讀取清單 (GET)
 app.get('/api/todos', async (req, res) => {
-  // Todo.find() 會去資料庫把所有資料抓出來
-  const allTodos = await Todo.find(); 
-  res.json(allTodos);
+  const currentUserId = req.headers.userId
+  const userTodos = await Todo.find({ userId: currentUserId }); 
+  res.json(userTodos);
 });
+
 
 // 2. 新增事項 (POST)
 app.post('/api/todos', async (req, res) => {
   // 用前端傳來的資料，創建一筆新記錄
+  const currentUserId = req.headers.userId
   const newTodo = await Todo.create({
+    userId: currentUserId,
     content: req.body.content
   });
   res.json(newTodo);
