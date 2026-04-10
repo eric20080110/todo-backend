@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 app.use(cors()); // 允許你的 React (localhost:5173) 跟後端 (localhost:3000) 溝通
 app.use(express.json()); // 讓後端看得懂前端傳來的 JSON 資料
 
-const dbURI = 'mongodb+srv://eric20080110_db_user:eric970110@tododata.67qp4fs.mongodb.net/?appName=tododata';
+const dbURI = process.env.MONGODB_URI
 
 
 const PORT = process.env.PORT || 3000;
